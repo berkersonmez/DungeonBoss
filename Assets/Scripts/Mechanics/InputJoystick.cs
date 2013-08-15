@@ -23,8 +23,15 @@ public class InputJoystick : MonoBehaviour {
 				return;
 			}
 			Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-        	Vector3 move = new Vector3(pos.x * dragSpeed, 0, pos.y * dragSpeed);
-        	Camera.main.transform.Translate(move, Space.World);
+			if (GameController.instance.gameState == (int) GameController.GameState.BOSSFIGHT) {
+				Vector3 moveBoss = new Vector3(pos.x, 0, pos.y);
+        		GameController.instance.bossC.move(moveBoss);
+			} else {
+				Vector3 move = new Vector3(pos.x * dragSpeed, 0, pos.y * dragSpeed);
+        		Camera.main.transform.Translate(move, Space.World);
+			}
+			
+        	
         }
 	}
 	

@@ -10,6 +10,7 @@ public class C_Char : C_Entity {
 	protected M_Char character;
 	protected Transform targetChest;
 	protected Transform targetMob;
+	protected Transform targetBoss;
 
 	void Start () {
 		charAI = GetComponent<EntityAI>();
@@ -85,6 +86,18 @@ public class C_Char : C_Entity {
 		}
 	}
 	
+	virtual protected void attackBossIfNear() {
+		if (Vector3.Distance(transform.position, targetBoss.position) <= character.mainAttackRange) {
+			state = (int) State.ATTACKING;
+			charAI.canMove = false;
+			Invoke("endMeleeCooldown", character.mainAttackCooldown);
+			
+			animateAttack(targetBoss.GetComponent<M_Boss>());
+			mainAttackAnim(targetBoss.GetComponent<M_Boss>());
+			character.damage(targetBoss.GetComponent<M_Boss>());
+		}
+	}
+	
 	private void endMeleeCooldown() {
 		charAI.canMove = true;
 		state = (int) State.WALKING_TO_ATTACK;
@@ -93,6 +106,26 @@ public class C_Char : C_Entity {
 	// Update is called once per frame
 	void Update () {
 		animate();
+		
+		// BOSSFIGHT
+		if (GameController.instance.gameState == (int) GameController.GameState.BOSSFIGHT) {
+			if (state == (int) State.WALKING_TO_TAKE) {
+				state = (int) State.SEEKING;
+			} else if (state == (int) State.WALKING_TO_ATTACK) {
+				if (targetBoss != null) {
+					attackBossIfNear();
+				}
+			} else if (state == (int) State.SEEKING) {
+				targetBoss = GameController.instance.boss.transform;
+				charAI.target = targetBoss;
+				charAI.canMove = true;
+				charAI.targetSet = true;
+				state = (int) State.WALKING_TO_ATTACK;
+			}
+			return;
+		}
+		
+		// NORMAL
 		if (state == (int) State.WALKING_TO_TAKE) {
 			if (targetChest == null) {
 				// Start Seeking
@@ -142,6 +175,9 @@ public class C_Char : C_Entity {
 	}
 	
 	public bool targetNearMob() {
+		if (GameController.instance.gameState == (int) GameController.GameState.BOSSFIGHT) {
+			return true;
+		}
 		targetMob = findNearestObject("Mob", mobAttentionRadius);
 		if (targetMob && state != (int) State.ATTACKING) {
 			state = (int) State.WALKING_TO_ATTACK;

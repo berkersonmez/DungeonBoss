@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour {
 	public Dictionary<int,string> portraitSprites;
 	public Dictionary<int,int> idToPrefab;
 	public GameObject[] charPrefabs;
+	public C_Boss bossC;
 	
 	public int grudge = 1000;
 	public int grudgePer5Seconds = 1;
@@ -32,6 +33,7 @@ public class GameController : MonoBehaviour {
 	public GameObject infoWindow;
 	public GameObject HUD;
 	public GameObject tinyWormPrefab;
+	public GameObject boss;
 	
 	private C_Spawner spawner;
 	
@@ -59,8 +61,10 @@ public class GameController : MonoBehaviour {
 			NGUITools.SetActive(window.gameObject, false);
 		}
 		talentWindow.GetComponent<TalentWindow>().initialize();
+		bossC = boss.GetComponent<C_Boss>();
 		InvokeRepeating("increaseGrudge", 5f, 5f);
-		Invoke("startNextDefense", 1f);
+		//Invoke("startNextDefense", 1f);
+		gameState = (int)GameState.BOSSFIGHT;
 	}
 	
 	public void endRound() {

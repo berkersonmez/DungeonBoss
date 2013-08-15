@@ -53,10 +53,22 @@ public class C_Mage : C_Char {
 		}
 	}
 	
+	override protected void attackBossIfNear() {
+		if (Vector3.Distance(transform.position, targetBoss.position) <= character.mainAttackRange) {
+			state = (int) State.ATTACKING;
+			charAI.canMove = false;
+			Invoke("endMeleeCooldown", character.mainAttackCooldown);
+			
+			animateAttack(targetBoss.GetComponent<M_Boss>());
+			mainAttackAnim(targetBoss.GetComponent<M_Boss>());
+		}
+	}
+	
 	override protected void mainAttackAnim(M_Entity other) {
 		Vector3 posDiff = other.transform.position - transform.position;
 		posDiff.y = 0;
 		GameObject attackEffect = Instantiate(mainAttackEffect, transform.position, transform.rotation) as GameObject;
 		attackEffect.GetComponent<E_Mageball>().initialize(posDiff.normalized, character);
+		attackEffect.GetComponent<E_Mageball>().targetTag = other.tag;
 	}
 }
