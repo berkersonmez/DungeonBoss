@@ -1,0 +1,18 @@
+TODO
+----
+* Char safety circle (no mob spawn there).
+-- Around char
+-- In the entrance
+* Proper background (floor) texture.
+* Boss system
+-- Boss fight
+* Main menu.
+-- Settings
+-- Boss Select
+* Sound
+* Music
+* More mobs.
+-- Medusa
+* More chars.
+-- Rogue
+-- Priest
