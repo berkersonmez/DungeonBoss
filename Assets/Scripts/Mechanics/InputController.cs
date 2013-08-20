@@ -23,32 +23,7 @@ public class InputController : MonoBehaviour {
 		zoomInitial = transform.position.y;
 	}
 	
-    void FixedUpdate() {
-		// BOSSFIGHT mode
-		if (GameController.instance.gameState == (int) GameController.GameState.BOSSFIGHT) {
-			transform.position = new Vector3(GameController.instance.boss.transform.position.x,
-				transform.position.y, GameController.instance.boss.transform.position.z);
-			GameController.instance.bossC.move(new Vector3(0f, 0f, 0f));
-			if (Input.GetButtonDown("Fire3")) {
-				autoMove = false;
-	            dragOrigin = Input.mousePosition;
-	            return;
-	        }
-			if (!Input.GetButton("Fire3")) return;
-			
-			Vector3 posBoss = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-        	Vector3 moveBoss = new Vector3(posBoss.x, 0, posBoss.y);
-			GameController.instance.bossC.move(moveBoss);
-			return;
-		}
-		
-		if (autoMove) {
-			transform.position = Vector3.Lerp(transform.position, autoMoveEnd, autoMoveSmooth * Time.deltaTime);
-			if (transform.position == autoMoveEnd) {
-				autoMove = false;
-			}
-		}
-		if (inputLock) return;
+    void Update() {
 		
 		if (Input.GetButtonDown("Function1")) {
 			NGUITools.SetActive(GameController.instance.infoWindow, true);
@@ -95,6 +70,32 @@ public class InputController : MonoBehaviour {
 		} else if (Input.GetButtonDown("Inv5")) {
 			Bottombar.instance.selectMob(4);
 		}
+		
+		// BOSSFIGHT mode
+		if (GameController.instance.gameState == (int) GameController.GameState.BOSSFIGHT) {
+			transform.position = new Vector3(GameController.instance.boss.transform.position.x,
+				transform.position.y, GameController.instance.boss.transform.position.z);
+			GameController.instance.bossC.move(new Vector3(0f, 0f, 0f));
+			if (Input.GetButtonDown("Fire3")) {
+				autoMove = false;
+	            dragOrigin = Input.mousePosition;
+	            return;
+	        }
+			if (!Input.GetButton("Fire3")) return;
+			
+			Vector3 posBoss = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
+        	Vector3 moveBoss = new Vector3(posBoss.x, 0, posBoss.y);
+			GameController.instance.bossC.move(moveBoss);
+			return;
+		}
+		
+		if (autoMove) {
+			transform.position = Vector3.Lerp(transform.position, autoMoveEnd, autoMoveSmooth * Time.deltaTime);
+			if (transform.position == autoMoveEnd) {
+				autoMove = false;
+			}
+		}
+		if (inputLock) return;
 		
 		if (Input.GetAxis("Mouse ScrollWheel") != 0) {
 			Vector3 moveVertical = new Vector3(0, Input.GetAxis("Mouse ScrollWheel") * zoomSpeed, 0);

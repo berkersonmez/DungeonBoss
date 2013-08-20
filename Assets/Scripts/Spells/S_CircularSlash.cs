@@ -19,7 +19,7 @@ public class S_CircularSlash : Spell {
 		InvokeRepeating("checkCondition", 1f, .5f);
 	}
 	
-	void checkCondition() {
+	override public void checkCondition() {
 		if (IsInvoking("spellCooldown")) return;
 		if (entityM.mana >= manaCost) {
 			if (countNearTargets() >= minTargetsToCast) {

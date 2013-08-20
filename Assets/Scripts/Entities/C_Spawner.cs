@@ -7,10 +7,17 @@ public class C_Spawner : MonoBehaviour {
 	
 	public GameObject[] portraits;
 	
-	private int charsLeft = -1;
+	public int charsLeft = -1;
 	
 	public void signalCharDied() {
 		charsLeft--;
+		GameController.instance.charDied();
+		if (charsLeft == 0) {
+			foreach( GameObject prt in portraits ) {
+				Destroy(prt);
+			} 
+			GameController.instance.endRound();
+		}
 	}
 	
 	public void spawn(int charID) {
@@ -64,11 +71,6 @@ public class C_Spawner : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (charsLeft == 0) {
-			foreach( GameObject prt in portraits ) {
-				Destroy(prt);
-			} 
-			GameController.instance.endRound();
-		}
+		
 	}
 }

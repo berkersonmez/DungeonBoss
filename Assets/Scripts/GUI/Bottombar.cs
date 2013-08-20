@@ -15,7 +15,7 @@ public class Bottombar : MonoBehaviour {
 	private UILabel l_level;
 	private UILabel l_units;
 	
-	void Start() {
+	void Awake() {
 		instance = this;
 		s_selectBorder = transform.Find("Panel").Find("Select").GetComponent<UISprite>();
 		l_gold = transform.Find("Panel").Find("L_Gold").GetComponent<UILabel>();
@@ -43,6 +43,30 @@ public class Bottombar : MonoBehaviour {
 		mobsInBar++;
 	}
 	
+	public void switchToBossMode() {
+		s_selectBorder.enabled = false;
+		for (int i = 0 ; i < 5 ; i++) {
+			if (GameController.instance.bossC.abilities[i] != null) {
+				s_ports[i].enabled = true;
+				s_ports[i].spriteName = GameController.instance.bossC.abilities[i].spriteName;
+			} else {
+				s_ports[i].enabled = false;
+			}
+		}
+	}
+	
+	public void switchToNormalMode() {
+		s_selectBorder.enabled = true;
+		for (int i = 0 ; i < 5 ; i++) {
+			if (barMobs[i] != null) {
+				s_ports[i].spriteName = GameController.instance.portraitSprites[barMobs[i].GetComponent<M_Entity>().id];
+				s_ports[i].enabled = true;
+			} else {
+				s_ports[i].enabled = false;
+			}
+		}
+	}
+	
 	public void removeFromBar(GameObject prefab) {
 		bool removed = false;
 		for (int i = 0 ; i < 5 ; i++) {
@@ -65,8 +89,22 @@ public class Bottombar : MonoBehaviour {
 	}
 	
 	public void selectMob(int index) {
-		s_selectBorder.transform.localPosition = s_ports[index].transform.localPosition + new Vector3(-16, 16, 0);
-		selectedMob = index;
+		if (GameController.instance.gameState == (int) GameController.GameState.BOSSFIGHT) {
+			if (index == 0) {
+				GameController.instance.bossC.ability1();
+			} else if (index == 1) {
+				GameController.instance.bossC.ability2();
+			} else if (index == 2) {
+				GameController.instance.bossC.ability3();
+			} else if (index == 3) {
+				GameController.instance.bossC.ability4();
+			} else if (index == 4) {
+				GameController.instance.bossC.ability5();
+			}
+		} else {
+			s_selectBorder.transform.localPosition = s_ports[index].transform.localPosition + new Vector3(-16, 16, 0);
+			selectedMob = index;
+		}
 	}
 	
 	

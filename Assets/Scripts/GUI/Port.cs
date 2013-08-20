@@ -17,9 +17,14 @@ public class Port : MonoBehaviour {
 	}
 	
 	void onHoldDown() {
-		if (Bottombar.instance.barMobs[index] != null) {
-			Bottombar.instance.barMobs[index].GetComponent<M_Entity>().showTooltip();
+		if (GameController.instance.gameState == (int) GameController.GameState.BOSSFIGHT) {
+			GameController.instance.bossC.abilities[index].showTooltip();
+		} else {
+			if (Bottombar.instance.barMobs[index] != null) {
+				Bottombar.instance.barMobs[index].GetComponent<M_Entity>().showTooltip();
+			}
 		}
+		
 	}
 	
 	void onClick() {

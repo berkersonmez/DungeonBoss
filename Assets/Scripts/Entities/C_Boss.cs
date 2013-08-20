@@ -4,8 +4,12 @@ using System.Collections;
 public class C_Boss : C_Entity {
 	public float speed = 5;
 	
+	public Spell[] abilities = new Spell[5];
+	
 	protected M_Boss boss;
 	protected Vector3 moveDirection;
+	protected Vector3 crosshairDirection;
+	protected UISprite crosshair;
 
 	void Start () {
 		boss = GetComponent<M_Boss>();
@@ -13,6 +17,10 @@ public class C_Boss : C_Entity {
 	}
 	
 	protected virtual void initialize() {
+		
+		crosshair = transform.Find("Crosshair").GetComponent<UISprite>();
+		abilities[0].crosshair = crosshair.transform;
+		
 		rigidbody.freezeRotation = true;
 		sm = GameObject.Find("_SpriteManager2").GetComponent<LinkedSpriteManager>();
 		
@@ -54,7 +62,32 @@ public class C_Boss : C_Entity {
     }
 	
 	public virtual void move(Vector3 moveDir) {
-		moveDirection = moveDir.normalized;
+		if (moveDir != Vector3.zero) {
+			moveDirection = moveDir.normalized;
+			crosshair.transform.localPosition = moveDirection;
+			crosshairDirection = moveDirection;
+		} else {
+			moveDirection = moveDir.normalized;
+			crosshair.transform.localPosition = crosshairDirection;
+		}
+		
+	}
+	
+	public virtual void ability1() {
+		animateAttack(crosshair);
+		abilities[0].checkCondition();
+	}
+	
+	public virtual void ability2() {
+	}
+	
+	public virtual void ability3() {
+	}
+	
+	public virtual void ability4() {
+	}
+	
+	public virtual void ability5() {
 	}
 	
 	void Update () {

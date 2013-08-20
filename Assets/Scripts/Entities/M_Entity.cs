@@ -123,6 +123,8 @@ public class M_Entity : MonoBehaviour {
 			other.HUD.Add(-dmg, Color.red, .1f);
 		} else if (other.gameObject.tag == "Char") {
 			other.HUD.Add(-dmg, Color.yellow, .1f);
+		} else if (other.gameObject.tag == "Boss") {
+			other.HUD.Add(-dmg, Color.red, .1f);
 		}
 	}
 	
@@ -134,6 +136,8 @@ public class M_Entity : MonoBehaviour {
 			other.HUD.Add("$sp" + (-dmg), Color.red, .1f);
 		} else if (other.gameObject.tag == "Char") {
 			other.HUD.Add("$sp" + (-dmg), Color.yellow, .1f);
+		} else if (other.gameObject.tag == "Boss") {
+			other.HUD.Add("$sp" + (-dmg), Color.red, .1f);
 		}
 	}
 	

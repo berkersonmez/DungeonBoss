@@ -20,7 +20,7 @@ public class C_Entity : MonoBehaviour {
 	protected UVAnimation attackRight;
 	protected UVAnimation attackLeft;
 	
-	public void animateAttack(M_Entity other) {
+	public void animateAttack(MonoBehaviour other) {
 		if (transform.position.x >= other.transform.position.x) {
 			sprite.PlayAnim(attackLeft);
 			animState = (int) AnimState.ATTACK_LEFT;

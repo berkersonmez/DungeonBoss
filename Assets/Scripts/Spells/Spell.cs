@@ -9,8 +9,10 @@ public class Spell : MonoBehaviour {
 	public string description;
 	
 	public int manaCost;
-	public int cooldown;
+	public float cooldown;
 	public int spellPower;
+	public Transform crosshair;
+	public string spriteName;
 	
 	protected C_Entity entityC;
 	protected M_Entity entityM;
@@ -48,6 +50,10 @@ public class Spell : MonoBehaviour {
 		
 	}
 	
+	virtual public void checkCondition() {
+		
+	}
+	
 	public void spellCooldown() {}
 	
 	public string tooltipMessage() {
@@ -56,5 +62,9 @@ public class Spell : MonoBehaviour {
 		tooltipMessage += "$mana " + manaCost + ", $cd " + cooldown + "s\n";
 		tooltipMessage += "[CFCFCF]'" + description + "'[-]";
 		return tooltipMessage;
+	}
+	
+	public void showTooltip() {
+		UITooltip.ShowText(tooltipMessage());
 	}
 }

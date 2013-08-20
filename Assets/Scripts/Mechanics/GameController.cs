@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour {
 	public static GameController instance;
 	public float preparationTime = 10f;
 	private float prepTime = 0f;
+	private int charsOutOfBossRoom = 0;
+	private Queue<GameObject> charsInBossRoom;
 	public float allowedSpawnDistanceFromChar = 10f;
 	public Dictionary<int,string> portraitSprites;
 	public Dictionary<int,int> idToPrefab;
@@ -51,6 +53,7 @@ public class GameController : MonoBehaviour {
 			portraitSprites.Add(4, "c_mage_08");
 			idToPrefab.Add(4,1);
 		}
+		charsInBossRoom = new Queue<GameObject>();
 	}
 	
 	void Start() {
@@ -63,20 +66,45 @@ public class GameController : MonoBehaviour {
 		talentWindow.GetComponent<TalentWindow>().initialize();
 		bossC = boss.GetComponent<C_Boss>();
 		InvokeRepeating("increaseGrudge", 5f, 5f);
-		//Invoke("startNextDefense", 1f);
-		gameState = (int)GameState.BOSSFIGHT;
+		Invoke("startNextDefense", 1f);
+		gameState = (int)GameState.PREPARATION;
+	}
+	
+	public void charEnteredBossRoom(GameObject enteredChar) {
+		charsOutOfBossRoom--;
+		enteredChar.GetComponent<C_Entity>().state = (int)C_Entity.State.IDLE;
+		charsInBossRoom.Enqueue(enteredChar);
+		
+		checkToStartBossFight();
+	}
+	
+	public void charDied() {
+		charsOutOfBossRoom--;
+		checkToStartBossFight();
+	}
+	
+	public void checkToStartBossFight() {
+		if (gameState == (int) GameState.BOSSFIGHT) return;
+		if (charsOutOfBossRoom == 0 && charsInBossRoom.Count != 0) {
+			while(charsInBossRoom.Count != 0) {
+				GameObject charInBossRoom = charsInBossRoom.Dequeue();
+				charInBossRoom.GetComponent<C_Entity>().state = (int)C_Entity.State.SEEKING;
+			}
+			gameState = (int)GameState.BOSSFIGHT;
+			Bottombar.instance.switchToBossMode();
+		}
 	}
 	
 	public void endRound() {
 		if (gameState == (int) GameState.DEFENSE_CLEAR) {
-			GameObject.Find("Incoming").GetComponent<UILabel>().enabled = true; // Incoming text
-			round++;
-			gameState = (int)GameState.PREPARATION;
-			prepTime = 0f;
-			Invoke("startNextDefense", 1f);
-		} else if (gameState == (int) GameState.DEFENSE_CIBR) {
-			
+		} else if (gameState == (int) GameState.BOSSFIGHT) {
+			Bottombar.instance.switchToNormalMode();
 		}
+		GameObject.Find("Incoming").GetComponent<UILabel>().enabled = true; // Incoming text
+		round++;
+		gameState = (int)GameState.PREPARATION;
+		prepTime = 0f;
+		Invoke("startNextDefense", 1f);
 	}
 	
 	public void gainExp(int exp) {
@@ -128,6 +156,7 @@ public class GameController : MonoBehaviour {
 		} else {
 			spawner.spawn();
 		}
+		charsOutOfBossRoom = spawner.charsLeft;
 	}
 	
 	void increaseGrudge() {

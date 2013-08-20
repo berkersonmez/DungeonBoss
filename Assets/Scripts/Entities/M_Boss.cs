@@ -2,14 +2,4 @@
 using System.Collections;
 
 public class M_Boss : M_Entity {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

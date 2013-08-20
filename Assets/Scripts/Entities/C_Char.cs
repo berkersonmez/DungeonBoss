@@ -126,7 +126,11 @@ public class C_Char : C_Entity {
 		}
 		
 		// NORMAL
-		if (state == (int) State.WALKING_TO_TAKE) {
+		if (state == (int) State.IDLE) {
+			charAI.target = null;
+			charAI.canMove = false;
+			charAI.targetSet = false;
+		} else if (state == (int) State.WALKING_TO_TAKE) {
 			if (targetChest == null) {
 				// Start Seeking
 				state = (int) State.SEEKING;
