@@ -13,6 +13,7 @@ public class InputController : MonoBehaviour {
 	private Vector3 autoMoveEnd;
     private Vector3 dragOrigin;
 	private float zoomInitial;
+	private InputJoystick joystick;
 	
 	public bool showHealthbars = false;
 	public bool showDamages = true;
@@ -21,6 +22,7 @@ public class InputController : MonoBehaviour {
 	void Awake() {
 		instance = this;
 		zoomInitial = transform.position.y;
+		joystick = GameObject.Find("Joystick").GetComponent<InputJoystick>();
 	}
 	
     void Update() {
@@ -75,7 +77,8 @@ public class InputController : MonoBehaviour {
 		if (GameController.instance.gameState == (int) GameController.GameState.BOSSFIGHT) {
 			transform.position = new Vector3(GameController.instance.boss.transform.position.x,
 				transform.position.y, GameController.instance.boss.transform.position.z);
-			GameController.instance.bossC.move(new Vector3(0f, 0f, 0f));
+			if (!joystick.dragging)
+				GameController.instance.bossC.move(new Vector3(0f, 0f, 0f));
 			if (Input.GetButtonDown("Fire3")) {
 				autoMove = false;
 	            dragOrigin = Input.mousePosition;

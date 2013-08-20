@@ -4,7 +4,7 @@ using System.Collections;
 public class InputJoystick : MonoBehaviour {
 	
 	private Vector3 dragOrigin;
-	private bool dragging;
+	public bool dragging;
 	public float dragSpeed = 4;
 	
 	void OnPress(bool isDown) {
@@ -22,7 +22,9 @@ public class InputJoystick : MonoBehaviour {
 				dragging = false;
 				return;
 			}
+			
 			Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
+			if (pos.magnitude > .15f) return;
 			if (GameController.instance.gameState == (int) GameController.GameState.BOSSFIGHT) {
 				Vector3 moveBoss = new Vector3(pos.x, 0, pos.y);
         		GameController.instance.bossC.move(moveBoss);
