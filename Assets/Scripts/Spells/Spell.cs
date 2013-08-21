@@ -3,10 +3,10 @@ using System.Collections;
 
 public class Spell : MonoBehaviour {
 	
-	[HideInInspector]
 	public string sName;
 	[HideInInspector]
 	public string description;
+	public string mockDescription;
 	
 	public int manaCost;
 	public float cooldown;
@@ -59,8 +59,16 @@ public class Spell : MonoBehaviour {
 	public string tooltipMessage() {
 		string tooltipMessage;
 		tooltipMessage = "[2EFFF1]" + sName + "[-]\n";
-		tooltipMessage += "$mana " + manaCost + ", $cd " + cooldown + "s\n";
+		tooltipMessage += "$mana " + getMod_manaCost() + ", $cd " + cooldown + "s\n";
 		tooltipMessage += "[CFCFCF]'" + description + "'[-]";
+		return tooltipMessage;
+	}
+	
+	public string tooltipMessageMock() {
+		string tooltipMessage;
+		tooltipMessage = "[2EFFF1]" + sName + "[-]\n";
+		tooltipMessage += "$mana " + manaCost + ", $cd " + cooldown + "s\n";
+		tooltipMessage += "[CFCFCF]'" + mockDescription + "'[-]";
 		return tooltipMessage;
 	}
 	

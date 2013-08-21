@@ -8,7 +8,6 @@ public class S_ConeSlash : Spell {
 	public GameObject effect;
 	
 	override public void initialize() {
-		sName = "Cone Slash";
 		description = "Inflicts damage with " + entityM.attackPower + " attack power to all " +
 			"targets in a cone.";
 		spriteName = "t_skeleton_8";
@@ -26,7 +25,7 @@ public class S_ConeSlash : Spell {
 	
 	void cast() {
 		animate();
-		entityM.mana -= manaCost;
+		entityM.mana -= getMod_manaCost();
 		GameObject[] chars = GameObject.FindGameObjectsWithTag("Char");
 		foreach(GameObject charObj in chars) {
 			Vector3 distVector = charObj.transform.position - transform.position;

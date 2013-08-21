@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour {
 	public GameObject[] charPrefabs;
 	public C_Boss bossC;
 	public M_Boss bossM;
+	public Vector3 bossSpawnPoint = new Vector3(15.9f, 0.5f, -35.8f);
 	
 	public int grudge = 1000;
 	public int grudgePer5Seconds = 1;
@@ -65,6 +66,7 @@ public class GameController : MonoBehaviour {
 			NGUITools.SetActive(window.gameObject, false);
 		}
 		talentWindow.GetComponent<TalentWindow>().initialize();
+		boss = Instantiate(BossHolder.instance.boss, bossSpawnPoint, BossHolder.instance.boss.transform.rotation) as GameObject;
 		bossC = boss.GetComponent<C_Boss>();
 		bossM = boss.GetComponent<M_Boss>();
 		Bottombar.instance.l_bossLabel.text = bossM.eName;

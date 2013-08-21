@@ -75,6 +75,11 @@ public class InputController : MonoBehaviour {
 		
 		// BOSSFIGHT mode
 		if (GameController.instance.gameState == (int) GameController.GameState.BOSSFIGHT) {
+			
+			if (Input.GetButtonDown("Fire1")) {
+				UITooltip.ShowText("");
+			}
+			
 			transform.position = new Vector3(GameController.instance.boss.transform.position.x,
 				transform.position.y, GameController.instance.boss.transform.position.z);
 			if (!joystick.dragging)

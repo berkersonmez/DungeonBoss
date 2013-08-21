@@ -30,7 +30,7 @@ public class S_CircularSlash : Spell {
 	
 	void cast() {
 		animate();
-		entityM.mana -= manaCost;
+		entityM.mana -= getMod_manaCost();
 		foreach(M_Entity target in nearTargets) {
 			entityM.spellDamage(target, spellPower);
 		}
