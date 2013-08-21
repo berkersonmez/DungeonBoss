@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
-	public enum GameState {PREPARATION = 0, DEFENSE_CLEAR, DEFENSE_CIBR, BOSSFIGHT};
+	public enum GameState {PREPARATION = 0, DEFENSE_CLEAR, DEFENSE_CIBR, BOSSFIGHT, GAMEOVER};
 	// Game Options
 	public int gameState = 0;
 	public GameObject combatText;
@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour {
 	public Dictionary<int,int> idToPrefab;
 	public GameObject[] charPrefabs;
 	public C_Boss bossC;
+	public M_Boss bossM;
 	
 	public int grudge = 1000;
 	public int grudgePer5Seconds = 1;
@@ -65,6 +66,8 @@ public class GameController : MonoBehaviour {
 		}
 		talentWindow.GetComponent<TalentWindow>().initialize();
 		bossC = boss.GetComponent<C_Boss>();
+		bossM = boss.GetComponent<M_Boss>();
+		Bottombar.instance.l_bossLabel.text = bossM.eName;
 		InvokeRepeating("increaseGrudge", 5f, 5f);
 		Invoke("startNextDefense", 1f);
 		gameState = (int)GameState.PREPARATION;
@@ -137,6 +140,7 @@ public class GameController : MonoBehaviour {
 	}
 	
 	public void gameOver() {
+		gameState = (int) GameState.GAMEOVER;
 		NGUITools.SetActive(gameoverWindow, true);
 		InputController.instance.inputLock = true;
 	}

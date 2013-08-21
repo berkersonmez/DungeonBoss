@@ -15,6 +15,12 @@ public class Bottombar : MonoBehaviour {
 	private UILabel l_level;
 	private UILabel l_units;
 	
+	private UILabel l_health;
+	private UILabel l_mana;
+	private UISlider s_health;
+	private UISlider s_mana;
+	public UILabel l_bossLabel;
+	
 	void Awake() {
 		instance = this;
 		s_selectBorder = transform.Find("Panel").Find("Select").GetComponent<UISprite>();
@@ -27,6 +33,11 @@ public class Bottombar : MonoBehaviour {
 		s_ports[2] = transform.Find("Panel").Find("Port3").GetComponent<UISprite>();
 		s_ports[3] = transform.Find("Panel").Find("Port4").GetComponent<UISprite>();
 		s_ports[4] = transform.Find("Panel").Find("Port5").GetComponent<UISprite>();
+		l_health = transform.Find("Panel").Find("Healthbar Boss").Find("Boss Health").GetComponent<UILabel>();
+		l_mana = transform.Find("Panel").Find("Manabar Boss").Find("Boss Mana").GetComponent<UILabel>();
+		s_health = transform.Find("Panel").Find("Healthbar Boss").GetComponent<UISlider>();
+		s_mana = transform.Find("Panel").Find("Manabar Boss").GetComponent<UISlider>();
+		l_bossLabel = transform.Find("Panel").Find("Boss Label").GetComponent<UILabel>();
 	}
 	
 	void Update() {
@@ -34,6 +45,10 @@ public class Bottombar : MonoBehaviour {
 		l_grudge.text = "$grudge " + GameController.instance.grudge;
 		l_level.text = "$level " + GameController.instance.level;
 		l_units.text = "$unit " + GameController.instance.units + "/" + GameController.instance.maxUnits;
+		l_health.text = GameController.instance.bossM.health + "/" + GameController.instance.bossM.maxHealth;
+		l_mana.text = GameController.instance.bossM.mana + "/" + GameController.instance.bossM.maxMana;
+		s_health.sliderValue = (float) GameController.instance.bossM.health / GameController.instance.bossM.maxHealth;
+		s_mana.sliderValue = (float) GameController.instance.bossM.mana / GameController.instance.bossM.maxMana;
 	}
 	
 	public void addToBar(GameObject prefab) {
