@@ -79,7 +79,7 @@ public class UIFontInspector : Editor
 		}
 	}
 
-	override public void OnInspectorGUI ()
+	public override void OnInspectorGUI ()
 	{
 		mFont = target as UIFont;
 		EditorGUIUtility.LookLikeControls(80f);
@@ -354,7 +354,7 @@ public class UIFontInspector : Editor
 					{
 						if (mFont.atlas != null)
 						{
-							EditorPrefs.SetString("NGUI Selected Sprite", sym.spriteName);
+							NGUISettings.selectedSprite = sym.spriteName;
 							NGUIEditorTools.Select(mFont.atlas.gameObject);
 						}
 					}

@@ -188,7 +188,7 @@ public class UIFontMaker : EditorWindow
 			// Helpful info
 			if (NGUISettings.fontData == null)
 			{
-				EditorGUILayout.HelpBox("The bitmap font creation mostly takes place outside of Unity. You can use BMFont on" +
+				EditorGUILayout.HelpBox("The bitmap font creation mostly takes place outside of Unity. You can use BMFont on " +
 					"Windows or your choice of Glyph Designer or the less expensive bmGlyph on the Mac.\n\n" +
 					"Either of these tools will create a FNT file for you that you will drag & drop into the field above.", MessageType.Info);
 			}
@@ -282,7 +282,7 @@ public class UIFontMaker : EditorWindow
 				if (go == null || go.GetComponent<UIFont>() == null)
 				{
 					// Create a new prefab for the atlas
-					Object prefab = CreateEmptyPrefab(prefabPath);
+					Object prefab = PrefabUtility.CreateEmptyPrefab(prefabPath);
 
 					// Create a new game object for the font
 					go = new GameObject(NGUISettings.fontName);
@@ -290,7 +290,7 @@ public class UIFontMaker : EditorWindow
 					CreateFont(NGUISettings.font, create, mat);
 
 					// Update the prefab
-					ReplacePrefab(go, prefab);
+					PrefabUtility.ReplacePrefab(go, prefab);
 					DestroyImmediate(go);
 					AssetDatabase.Refresh();
 
@@ -335,25 +335,5 @@ public class UIFontMaker : EditorWindow
 				font.atlas = NGUISettings.atlas;
 			}
 		}
-	}
-
-	static Object CreateEmptyPrefab (string prefabPath)
-	{
-#if UNITY_3_4
-		return EditorUtility.CreateEmptyPrefab(prefabPath);
-#else
-		return PrefabUtility.CreateEmptyPrefab(prefabPath);
-#endif
-	}
-
-	static void ReplacePrefab (GameObject go, Object prefab)
-	{
-#if UNITY_3_4
-		// Update the prefab
-		EditorUtility.ReplacePrefab(go, prefab);
-#else
-		// Update the prefab
-		PrefabUtility.ReplacePrefab(go, prefab);
-#endif
 	}
 }
