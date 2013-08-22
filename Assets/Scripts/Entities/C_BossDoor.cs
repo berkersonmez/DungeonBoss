@@ -7,6 +7,15 @@ public class C_BossDoor : MonoBehaviour {
 	
 	int grudgeCost = 30;
 	
+	protected SpriteManager sm;
+	protected Sprite sprite;
+	
+	void Start() {
+		sm = GameObject.Find("_SpriteManager").GetComponent<LinkedSpriteManager>();
+		
+		sprite = sm.AddSprite(this.gameObject, 1.5f, 1.5f, sm.PixelCoordToUVCoord(9*96, 288), sm.PixelSpaceToUVSpace(96, 96), Vector3.zero, false);
+	}
+	
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag == "Char") {
 			other.transform.position = bossroomPos;
