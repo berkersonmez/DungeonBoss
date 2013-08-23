@@ -2,7 +2,11 @@ using UnityEngine;
 using System.Collections;
 
 public class C_Chest : MonoBehaviour {
-
+	
+	public string eName;
+	public string eDescription;
+	public int goldCost;
+	
 	int grudgeCost = 30;
 	protected SpriteManager sm;
 	protected Sprite sprite;
@@ -21,5 +25,9 @@ public class C_Chest : MonoBehaviour {
 		}
     }
 	
-	
+	public virtual void showTooltip() {
+		string tText = "[FFFF00]" + eName + "[-]\n";
+		tText += "[D1D1D1]'" + eDescription + "'[-]";
+		UITooltip.ShowText(tText);
+	}
 }

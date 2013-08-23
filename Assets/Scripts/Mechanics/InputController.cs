@@ -118,9 +118,28 @@ public class InputController : MonoBehaviour {
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				RaycastHit hit;
 				if (Physics.Raycast(ray, out hit, 1000f)) {
-					if (hit.collider.tag == "Ground") {
+					if (hit.collider.tag == "Ground" && !Bottombar.instance.chestSpawnMode) {
 						Bottombar.instance.spawnMobReq(hit.point);
 						GetComponent<UICamera>().ShowTooltip(false);
+					} else if (hit.collider.tag == "Room Unlock") {
+						hit.collider.GetComponent<RoomUnlockButton>().onClick();
+					} else if (hit.collider.tag == "Room Shade") {
+						RoomController rc = hit.collider.GetComponent<RoomController>();
+						if (!rc.locked) {
+							int layerMask = 1 << 9; // Ground Layer
+							if (Bottombar.instance.chestSpawnMode) {
+								if (!rc.isFull() && Physics.Raycast(ray, out hit, 1000f, layerMask)) {
+									GameObject chest = Bottombar.instance.spawnChest(hit.point);
+									if (chest != null) {
+										rc.addChest(chest);
+									}
+								}
+								Bottombar.instance.endChestSpawnMode();
+							} else if (Physics.Raycast(ray, out hit, 1000f, layerMask)) {
+								Bottombar.instance.spawnMobReq(hit.point);
+								GetComponent<UICamera>().ShowTooltip(false);
+				    		}
+						}
 					}
 	    		}
 			}

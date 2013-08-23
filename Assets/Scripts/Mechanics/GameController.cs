@@ -38,6 +38,7 @@ public class GameController : MonoBehaviour {
 	public GameObject HUD;
 	public GameObject tinyWormPrefab;
 	public GameObject boss;
+	public GameObject incomingPanel;
 	
 	private C_Spawner spawner;
 	
@@ -105,7 +106,7 @@ public class GameController : MonoBehaviour {
 		} else if (gameState == (int) GameState.BOSSFIGHT) {
 			Bottombar.instance.switchToNormalMode();
 		}
-		GameObject.Find("Incoming").GetComponent<UILabel>().enabled = true; // Incoming text
+		NGUITools.SetActive(incomingPanel, true);
 		round++;
 		gameState = (int)GameState.PREPARATION;
 		prepTime = 0f;
@@ -147,6 +148,10 @@ public class GameController : MonoBehaviour {
 		InputController.instance.inputLock = true;
 	}
 	
+	public void startNextDefenseImmediately() {
+		prepTime = preparationTime;
+	}
+	
 	void startNextDefense() {
 		if (prepTime < preparationTime) {
 			prepTime += 1f;
@@ -154,9 +159,9 @@ public class GameController : MonoBehaviour {
 			Invoke("startNextDefense", 1f);
 			return;
 		}
-		GameObject.Find("Incoming").GetComponent<UILabel>().text = "Chars incoming in 10 seconds...";
+		GameObject.Find("Incoming").GetComponent<UILabel>().text = "Chars incoming in 30 seconds...";
 		gameState = (int)GameState.DEFENSE_CLEAR;
-		GameObject.Find("Incoming").GetComponent<UILabel>().enabled = false; // Incoming text
+		NGUITools.SetActive(incomingPanel, false); // Incoming text
 		if (round <= 10) {
 			spawner.spawn(charsInRound[round-1]);
 		} else {

@@ -8,6 +8,9 @@ public class Bottombar : MonoBehaviour {
 	public int mobsInBar = 0;
 	public int selectedMob = 0;
 	
+	private GameObject chestPrefab;
+	public bool chestSpawnMode = false;
+	
 	private UISprite s_selectBorder;
 	private UISprite[] s_ports = new UISprite[5];
 	private UILabel l_gold;
@@ -122,6 +125,15 @@ public class Bottombar : MonoBehaviour {
 		}
 	}
 	
+	public void startChestSpawnMode(GameObject chestPrefab) {
+		this.chestPrefab = chestPrefab;
+		chestSpawnMode = true;
+	}
+	
+	public void endChestSpawnMode() {
+		this.chestPrefab = null;
+		chestSpawnMode = false;
+	}
 	
 	public void spawnMobReq(Vector3 position) {
 		GameObject [] chars = GameObject.FindGameObjectsWithTag("Char");
@@ -138,5 +150,13 @@ public class Bottombar : MonoBehaviour {
 	public void spawnMob(Vector3 position) {
 		GameController.instance.spawnUnit();
 		Instantiate(barMobs[selectedMob], position + new Vector3(0, 0.2f, 0), barMobs[selectedMob].transform.rotation);
+	}
+	
+	public GameObject spawnChest(Vector3 position) {
+		if (GameController.instance.gold >= chestPrefab.GetComponent<C_Chest>().goldCost) {
+			GameController.instance.gold -= chestPrefab.GetComponent<C_Chest>().goldCost;
+			return Instantiate(chestPrefab, position + new Vector3(0, 0.2f, 0), chestPrefab.transform.rotation) as GameObject;
+		}
+		return null;
 	}
 }
