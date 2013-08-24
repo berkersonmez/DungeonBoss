@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class RoomController : MonoBehaviour {
-
+	
+	public int id;
 	public bool locked = true;
 	public int cost;
 	public GameObject[] chests = new GameObject[2];
@@ -33,6 +34,7 @@ public class RoomController : MonoBehaviour {
 	}
 	
 	public void addChest(GameObject chest) {
+		chest.GetComponent<C_Chest>().roomID = id;
 		if (chests[0] == null) {
 			chests[0] = chest;
 		} else if (chests[1] == null) {

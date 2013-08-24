@@ -39,6 +39,7 @@ public class GameController : MonoBehaviour {
 	public GameObject tinyWormPrefab;
 	public GameObject boss;
 	public GameObject incomingPanel;
+	public GameObject[] roomShades;
 	
 	private C_Spawner spawner;
 	
@@ -66,8 +67,12 @@ public class GameController : MonoBehaviour {
 		foreach(Transform window in GameObject.Find("Window").transform) {
 			NGUITools.SetActive(window.gameObject, false);
 		}
+		if (!SaveController.instance.newGame) {
+			SaveController.instance.prepareLoadedLevel();
+		} else {
+			boss = Instantiate(BossHolder.instance.boss, bossSpawnPoint, BossHolder.instance.boss.transform.rotation) as GameObject;
+		}
 		talentWindow.GetComponent<TalentWindow>().initialize();
-		boss = Instantiate(BossHolder.instance.boss, bossSpawnPoint, BossHolder.instance.boss.transform.rotation) as GameObject;
 		bossC = boss.GetComponent<C_Boss>();
 		bossM = boss.GetComponent<M_Boss>();
 		Bottombar.instance.l_bossLabel.text = bossM.eName;
@@ -110,6 +115,7 @@ public class GameController : MonoBehaviour {
 		round++;
 		gameState = (int)GameState.PREPARATION;
 		prepTime = 0f;
+		SaveController.instance.saveLevel();
 		Invoke("startNextDefense", 1f);
 	}
 	

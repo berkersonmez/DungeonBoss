@@ -4,6 +4,7 @@ using System.Collections;
 public class M_Entity : MonoBehaviour {
 	
 	public int id;
+	public int prefabId;
 	public string eName;
 	public string eDescription;
 	
@@ -20,6 +21,7 @@ public class M_Entity : MonoBehaviour {
 	
 	public int maxMana;
 	public int maxHealth;
+	
 	
 	/*---------------------------*/
 	/*------Level Modifiers------*/

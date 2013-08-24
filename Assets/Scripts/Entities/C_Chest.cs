@@ -3,9 +3,11 @@ using System.Collections;
 
 public class C_Chest : MonoBehaviour {
 	
+	public int prefabId;
 	public string eName;
 	public string eDescription;
 	public int goldCost;
+	public int roomID;
 	
 	int grudgeCost = 30;
 	protected SpriteManager sm;
@@ -24,6 +26,11 @@ public class C_Chest : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
     }
+	
+	public void destroyNow() {
+		sm.RemoveSprite(sprite);
+		Destroy(this.gameObject);
+	}
 	
 	public virtual void showTooltip() {
 		string tText = "[FFFF00]" + eName + "[-]\n";
