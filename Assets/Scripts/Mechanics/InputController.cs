@@ -71,6 +71,8 @@ public class InputController : MonoBehaviour {
 			Bottombar.instance.selectMob(3);
 		} else if (Input.GetButtonDown("Inv5")) {
 			Bottombar.instance.selectMob(4);
+		} else if (Input.GetButtonDown("Enter")) {
+			MessageBox.instance.skipToNextMessage();
 		}
 		
 		// BOSSFIGHT mode

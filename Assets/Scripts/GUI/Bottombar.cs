@@ -139,6 +139,7 @@ public class Bottombar : MonoBehaviour {
 		GameObject [] chars = GameObject.FindGameObjectsWithTag("Char");
 		foreach(GameObject chr in chars) {
 			if (Vector3.Distance(chr.transform.position, position) < GameController.instance.allowedSpawnDistanceFromChar) {
+				MessageBox.instance.showWarning("Mobs cannot be spawned close to enemies!");
 				return;
 			}
 		}
