@@ -32,6 +32,8 @@ public class GameController : MonoBehaviour {
 	public int maxUnits = 20;
 	public int talentPoints = 0;
 	
+	public GameObject loadingWindow;
+	public GameObject mobWindow;
 	public GameObject talentWindow;
 	public GameObject gameoverWindow;
 	public GameObject infoWindow;

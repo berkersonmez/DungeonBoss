@@ -9,6 +9,7 @@ public class TalentWindow : MonoBehaviour {
 	public TalentSlot [] slots;
 	
 	/* Talents */
+	public Talent[][] allTalents;
 	public Talent [] talents_2; // Worm
 	public Talent [] talents_3; // Skeleton
 	
@@ -48,6 +49,7 @@ public class TalentWindow : MonoBehaviour {
 	}
 	
 	void setTalents() {
+		allTalents = new Talent[2][];
 		// WORM
 		talents_2 = new Talent[9];
 		talents_2[0] = new Talent(0, "Double Trouble", 
@@ -78,6 +80,7 @@ public class TalentWindow : MonoBehaviour {
 		talents_2[8] = new Talent(8, "Regeneration", 
 			"Regenerate 1% health per second.",
 			"t_worm_9");
+		allTalents[0] = talents_2;
 		
 		// SKELETON
 		talents_3 = new Talent[9];
@@ -108,5 +111,6 @@ public class TalentWindow : MonoBehaviour {
 		talents_3[8] = new Talent(8, "Ferris Wheel", 
 			"Increase range of 'Circular Slash' by 50%.",
 			"t_skeleton_9");
+		allTalents[1] = talents_3;
 	}
 }

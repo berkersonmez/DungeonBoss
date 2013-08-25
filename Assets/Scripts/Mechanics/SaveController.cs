@@ -35,6 +35,10 @@ public class SaveController : MonoBehaviour {
 		public List<int[]> chests;
 		public List<float[]> chestPos;
 		
+		public List<int[]> spawnSlots;
+		
+		public List<int[]> talents;
+		
 		public string saveTime;
 	}
 	
@@ -155,6 +159,36 @@ public class SaveController : MonoBehaviour {
 			savedGame.chestPos[i][2] = chest.transform.position.z;
 			i++;
 		}
+		
+		// Spawn Menu
+		savedGame.spawnSlots = new List<int[]>();
+		i = 0;
+		while (true) {
+			i++;
+			Transform mobSlot = GameController.instance.mobWindow.transform.Find("Scroller/Grid/Slot" + i);
+			if (mobSlot != null) {
+				ShopSlot sSlot = mobSlot.GetComponent<ShopSlot>();
+				savedGame.spawnSlots.Add(new int[4]);
+				savedGame.spawnSlots[i-1][0] = (sSlot.locked ? 1 : 0);
+				savedGame.spawnSlots[i-1][1] = (sSlot.bought ? 1 : 0);
+				savedGame.spawnSlots[i-1][2] = (sSlot.selected ? 1 : 0);
+				int prefabId = sSlot.prefab.GetComponent<M_Entity>() == null ? sSlot.prefab.GetComponent<C_Chest>().prefabId : sSlot.prefab.GetComponent<M_Entity>().prefabId;
+				savedGame.spawnSlots[i-1][3] = prefabId;
+			} else {
+				break;
+			}
+		}
+		
+		// Talents
+		savedGame.talents = new List<int[]>();
+		i = 0;
+		foreach(Talent[] talents in TalentWindow.instance.allTalents) {
+			savedGame.talents.Add(new int[9]);
+			for (int j = 0 ; j < 9 ; j++) {
+				savedGame.talents[i][j] = (talents[j].active ? 1 : 0);
+			}
+			i++;
+		}
 	}
 	
 	public void cleanLevelForLoad() {
@@ -164,6 +198,7 @@ public class SaveController : MonoBehaviour {
 	}
 	
 	public void prepareLoadedLevel() {
+		NGUITools.SetActive(GameController.instance.loadingWindow, true);
 		GameController.instance.level = savedGame.level;
 		GameController.instance.round = savedGame.round;
 		GameController.instance.grudge = savedGame.grudge;
@@ -194,6 +229,8 @@ public class SaveController : MonoBehaviour {
 			GameController.instance.roomShades[roomAttr[0]].GetComponent<RoomController>().locked = (roomAttr[1] == 1);
 		}
 		
+		NGUITools.SetActive(GameController.instance.mobWindow, true);
+		
 		Invoke("postPrepareLoadedLevel", .5f);
 	}
 	
@@ -222,6 +259,40 @@ public class SaveController : MonoBehaviour {
 			GameController.instance.roomShades[savedGame.chests[i][1]].GetComponent<RoomController>().addChest(insChest);
 			i++;
 		}
+		
+		// Spawn Menu
+		i = 0;
+		while (true) {
+			i++;
+			Transform mobSlot = GameController.instance.mobWindow.transform.Find("Scroller/Grid/Slot" + i);
+			if (mobSlot != null) {
+				ShopSlot sSlot = mobSlot.GetComponent<ShopSlot>();
+				if (savedGame.spawnSlots[i-1][0] != 1) {
+					sSlot.unlock();
+				}
+				if (savedGame.spawnSlots[i-1][1] == 1) {
+					sSlot.changeButtonToTalent();
+				}
+				if (savedGame.spawnSlots[i-1][2] == 1) {
+					sSlot.toggleSelected();
+					Bottombar.instance.addToBar(PrefabIndex.instance.prefabIndex[savedGame.spawnSlots[i-1][3]]);
+				}
+			} else {
+				break;
+			}
+		}
+		NGUITools.SetActive(GameController.instance.mobWindow, false);
+		
+		// Talents
+		i = 0;
+		foreach(Talent[] talents in TalentWindow.instance.allTalents) {
+			for (int j = 0 ; j < 9 ; j++) {
+				talents[j].active = savedGame.talents[i][j] == 1;
+			}
+			i++;
+		}
+		
+		NGUITools.SetActive(GameController.instance.loadingWindow, false);
 	}
 	
 	private void save(string prefKey) {

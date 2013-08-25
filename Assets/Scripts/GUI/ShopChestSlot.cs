@@ -1,16 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShopChestSlot : MonoBehaviour {
-
-	public GameObject prefab;
-	public bool locked;
-	public int unlocksAt;
-	
-	private UISprite s_avatar;
-	private UILabel l_description;
-	private UISprite s_button;
-	private UILabel l_button;
+public class ShopChestSlot : ShopSlot {
 	
 	void Start() {
 		s_avatar = transform.Find("Avatar").GetComponent<UISprite>();
@@ -27,7 +18,7 @@ public class ShopChestSlot : MonoBehaviour {
 		}
 	}
 	
-	public void unlock() {
+	public override void unlock() {
 		s_button.spriteName = "ui_mobselect_buy";
 		l_button.text = "Put down $gold" + prefab.GetComponent<C_Chest>().goldCost;
 		locked = false;

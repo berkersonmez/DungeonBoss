@@ -9,11 +9,11 @@ public class ShopSlot : MonoBehaviour {
 	public bool locked;
 	public int unlocksAt;
 	
-	private UISprite s_avatar;
-	private UILabel l_description;
-	private UISprite s_button;
-	private UILabel l_button;
-	private UISprite s_selected;
+	protected UISprite s_avatar;
+	protected UILabel l_description;
+	protected UISprite s_button;
+	protected UILabel l_button;
+	protected UISprite s_selected;
 	
 	void Start() {
 		s_avatar = transform.Find("Avatar").GetComponent<UISprite>();
@@ -37,13 +37,13 @@ public class ShopSlot : MonoBehaviour {
 		}
 	}
 	
-	public void unlock() {
+	public virtual void unlock() {
 		s_button.spriteName = "ui_mobselect_buy";
 		l_button.text = "Buy $gold" + prefab.GetComponent<M_Mob>().goldCost;
 		locked = false;
 	}
 	
-	public void changeButtonToTalent() {
+	public virtual void changeButtonToTalent() {
 		bought = true;
 		s_button.spriteName = "ui_mobselect_talent";
 		l_button.text = "[FFFFFF]Talents";
