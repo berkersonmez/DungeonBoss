@@ -5,9 +5,17 @@ public class M_Char : M_Entity {
 	
 	public int experience = 10;
 	public int carriedGold = 20;
+	public string nickname;
 	
 	void Update () {
 		update();
+	}
+	
+	protected override void initialize() {
+		base.initialize();
+		UILabel nickText = HUD.transform.Find("Nickname").GetComponent<UILabel>();
+		nickText.text = nickname;
+		nickText.enabled = true;
 	}
 	
 	protected virtual void update() {

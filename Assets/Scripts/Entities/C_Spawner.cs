@@ -23,6 +23,7 @@ public class C_Spawner : MonoBehaviour {
 	public void spawn(int charID) {
 		int numberOfChars = 1;
 		portraits = new GameObject[numberOfChars];
+		string[,] nicks = XMLController.instance.getRandomNicknames(numberOfChars);
 		for (int i = 0 ; i < numberOfChars ; i++) {
 			int prefabIndex = GameController.instance.idToPrefab[charID];
 			GameObject chr = Instantiate(GameController.instance.charPrefabs[prefabIndex], transform.position, transform.rotation) as GameObject;
@@ -31,7 +32,7 @@ public class C_Spawner : MonoBehaviour {
 			prt.transform.localScale = new Vector3(1f, 1f, 1f);
 			prt.transform.localPosition = new Vector3(0f, 0f - 400f * i , -1090.77f);
 			prt.transform.localRotation = Quaternion.identity;
-			
+			chr.GetComponent<M_Char>().nickname = nicks[i, 0] + nicks[i, 1];
 			portraits[i] = prt;
 			prt.GetComponent<Portrait>().setChar(chr.GetComponent<M_Char>());
 		}
@@ -41,6 +42,7 @@ public class C_Spawner : MonoBehaviour {
 	public void spawn() {
 		int spawnCount = calculateSpawnCount();
 		portraits = new GameObject[spawnCount];
+		string[,] nicks = XMLController.instance.getRandomNicknames(spawnCount);
 		for (int i = 0 ; i < spawnCount ; i++) {
 			GameObject chr = Instantiate(getRandomCharPrefab(), transform.position, transform.rotation) as GameObject;
 			GameObject prt = Instantiate(portrait, portrait.transform.position, portrait.transform.rotation) as GameObject;
@@ -48,7 +50,7 @@ public class C_Spawner : MonoBehaviour {
 			prt.transform.localScale = new Vector3(1f, 1f, 1f);
 			prt.transform.localPosition = new Vector3(0f, 0f - 400f * i , -1090.77f);
 			prt.transform.localRotation = Quaternion.identity;
-			
+			chr.GetComponent<M_Char>().nickname = nicks[i, 0] + nicks[i, 1];
 			portraits[i] = prt;
 			prt.GetComponent<Portrait>().setChar(chr.GetComponent<M_Char>());
 		}

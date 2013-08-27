@@ -101,6 +101,7 @@ public class M_Entity : MonoBehaviour {
 		HUD = hud.GetComponent<HUDText>();
 		HUD.GetComponent<UIFollowTarget>().target = this.transform;
 		hudHealth = hud.transform.Find("Healthbar").GetComponent<UISlider>();
+		HUD.transform.Find("Nickname").GetComponent<UILabel>().enabled = false;
 		if (!InputController.instance.showDamages) {
 			HUD.enabled = false;
 		}

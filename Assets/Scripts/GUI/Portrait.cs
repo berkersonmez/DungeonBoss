@@ -8,6 +8,7 @@ public class Portrait : MonoBehaviour {
 	private UISprite avatar;
 	private UILabel l_health;
 	private UILabel l_mana;
+	private UILabel l_nickname;
 	private UISlider s_health;
 	private UISlider s_mana;
 	
@@ -16,9 +17,11 @@ public class Portrait : MonoBehaviour {
 		avatar = transform.Find("Avatar").GetComponent<UISprite>();
 		l_health = transform.Find("Health").Find("H_Text").GetComponent<UILabel>();
 		l_mana = transform.Find("Mana").Find("H_Mana").GetComponent<UILabel>();
+		l_nickname = transform.Find("Nickname").GetComponent<UILabel>();
 		s_health = transform.Find("Health").GetComponent<UISlider>();
 		s_mana = transform.Find("Mana").GetComponent<UISlider>();
 		
+		l_nickname.text = character.nickname;
 		avatar.spriteName = GameController.instance.portraitSprites[character.id];
 	}
 	
